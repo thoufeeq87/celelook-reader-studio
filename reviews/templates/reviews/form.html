@@ -1,0 +1,10 @@
+{% extends 'reviews/base.html' %}
+{% block title %}{{ page_title }} · Celelook{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto"><a href="{{ cancel_url }}" class="inline-block text-pine text-sm font-semibold mb-6">← Back to {% if project %}book workspace{% else %}my books{% endif %}</a>
+<div class="card p-7 md:p-10"><p class="text-xs text-pine font-bold tracking-widest uppercase mb-2">Celelook guided workflow</p><h1 class="font-serif text-4xl text-ink mb-3">{{ page_title }}</h1>{% if project %}<p class="text-stone-500 mb-3">{{ project.title }} · {{ project.author }}</p>{% endif %}{% if help_text %}<p class="text-sm leading-relaxed text-stone-600 bg-stone-50 p-4 rounded-xl mb-6">{{ help_text }}</p>{% endif %}
+<form method="post" class="space-y-6">{% csrf_token %}{% if form.non_field_errors %}<div class="text-red-800 bg-red-50 p-4 rounded-lg">{{ form.non_field_errors }}</div>{% endif %}
+{% for field in form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<span class="helptext">{{ field.help_text }}</span>{% endif %}{{ field.errors }}</div>{% endfor %}
+<div class="flex flex-wrap gap-3 border-t border-stone-100 pt-6"><button class="btn btn-primary" type="submit">Save my work</button><a class="btn btn-soft" href="{{ cancel_url }}">Cancel</a></div></form>
+</div></div>
+{% endblock %}
