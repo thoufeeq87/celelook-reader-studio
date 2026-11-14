@@ -1,27 +1,44 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Celelook Reader Studio{% endblock %}</title>
   <meta name="description" content="Private memoir reading notes and an editorial review workflow for Celelook.">
-  <!-- Tailwind Play CDN is suitable for local evaluation. See README for production build guidance. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = {theme:{extend:{colors:{ink:'#172C2C',pine:'#175B52',paper:'#FBF9F5',sand:'#EAE5DA'},fontFamily:{sans:['ui-sans-serif','system-ui','sans-serif'],serif:['Georgia','serif']}}}}</script>
-  <style>body{background:#FBF9F5} .card{background:#fff;border:1px solid #E8E5DF;border-radius:1.15rem;box-shadow:0 2px 8px rgba(26,51,42,.025)} .btn{display:inline-flex;align-items:center;justify-content:center;padding:.67rem 1.1rem;border-radius:.8rem;font-size:.88rem;font-weight:650;transition:background .15s} .btn-primary{background:#175B52;color:#fff}.btn-primary:hover{background:#10483f}.btn-soft{background:#edf3ef;color:#175B52}.btn-soft:hover{background:#dcece5} .field label{display:block;font-size:.9rem;font-weight:650;color:#31423d;margin-bottom:.5rem} .field .helptext{display:block;color:#78716c;font-size:.78rem;margin-top:.3rem}.field ul.errorlist{color:#b91c1c;font-size:.8rem;margin:.4rem 0} a:focus-visible,button:focus-visible{outline:3px solid #5a9e8d;outline-offset:3px}</style>
+  <script>tailwind.config={theme:{extend:{colors:{ink:'#4A2932',pine:'#2E5339',paper:'#FDF5E6',sand:'#F5E6D3',burgundy:'#722F37',gold:'#B8860B'},fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','Georgia','serif']}}}}</script>
+  <link rel="stylesheet" href="{% static 'reviews/victorian.css' %}">
 </head>
-<body class="text-stone-800 antialiased min-h-screen">
-<header class="border-b border-stone-200 bg-white/95">
+<body class="min-h-screen antialiased">
+<header class="v-site-header">
   <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-3">
-    <a href="{% url 'dashboard' %}" class="flex items-center gap-3 text-ink font-bold tracking-tight text-xl"><span class="inline-flex h-10 w-10 rounded-xl bg-pine text-white items-center justify-center font-serif text-2xl">C</span><span>Celelook <span class="font-normal text-stone-500 text-base">Reader Studio</span></span></a>
-    <nav class="flex items-center gap-3 text-sm">
-      {% if user.is_authenticated %}<span class="hidden sm:inline text-stone-500">{{ user.username }}</span><a href="{% url 'dashboard' %}" class="font-semibold text-pine">My books</a><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="text-stone-500 hover:text-ink" type="submit">Log out</button></form>
-      {% else %}<a href="{% url 'login' %}" class="text-pine font-semibold">Log in</a><a href="{% url 'signup' %}" class="btn btn-primary">Sign up</a>{% endif %}
+    <a href="{% url 'dashboard' %}" class="flex items-center gap-3 font-bold text-lg sm:text-xl min-w-0" aria-label="Celelook Reader Studio home">
+      <span class="v-brand-mark inline-flex h-11 w-11 shrink-0 items-center justify-center text-2xl">C</span>
+      <span class="v-brand-name leading-tight">Celelook <span class="font-normal text-stone-500 text-sm sm:text-base whitespace-nowrap">Reader Studio</span></span>
+    </a>
+    <nav class="flex flex-wrap justify-end items-center gap-x-3 gap-y-2 text-sm" aria-label="Account navigation">
+      {% if user.is_authenticated %}
+        <span class="hidden sm:inline text-stone-500">{{ user.username }}</span>
+        <a href="{% url 'dashboard' %}" class="font-semibold text-pine">My books</a>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="text-pine font-semibold" type="submit">Log out</button></form>
+      {% else %}
+        <a href="{% url 'login' %}" class="text-pine font-semibold">Log in</a>
+        <a href="{% url 'signup' %}" class="btn btn-primary">Sign up</a>
+      {% endif %}
     </nav>
   </div>
 </header>
-<main class="max-w-6xl mx-auto px-5 py-9 md:py-12">
-  {% if messages %}<div class="mb-6 space-y-2" role="status">{% for message in messages %}<div class="rounded-xl px-4 py-3 text-sm border {% if message.tags == 'error' %}bg-red-50 text-red-900 border-red-200{% else %}bg-teal-50 text-teal-950 border-teal-100{% endif %}">{{ message }}</div>{% endfor %}</div>{% endif %}
+<main class="v-content max-w-6xl mx-auto px-5 py-9 md:py-12">
+  {% if messages %}<div class="mb-6 space-y-2" role="status">{% for message in messages %}<div class="v-note text-sm">{{ message }}</div>{% endfor %}</div>{% endif %}
   {% block content %}{% endblock %}
 </main>
-<footer class="max-w-6xl mx-auto px-5 py-10 border-t border-stone-200 text-sm text-stone-500 flex flex-wrap justify-between gap-3"><span>Celelook · True Stories of Survival, Resilience & Starting Over</span><span>Private reading workspace · No automatic publication</span></footer>
-</body></html>
+<footer class="v-footer max-w-6xl mx-auto px-5 py-10 text-sm flex flex-wrap justify-between gap-3">
+  <span>Celelook · True Stories of Survival, Resilience &amp; Starting Over</span>
+  <span>Private reading workspace · No automatic publication</span>
+</footer>
+</body>
+</html>

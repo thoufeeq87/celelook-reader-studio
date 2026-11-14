@@ -1,3 +1,23 @@
-{% extends 'reviews/base.html' %}{% block title %}Sign up · Celelook{% endblock %}{% block content %}
-<div class="max-w-md mx-auto card p-8"><h1 class="font-serif text-3xl text-ink">Create your reading space</h1><p class="text-stone-500 text-sm mt-2 mb-6">Your notes are only visible in your own account.</p><form method="post" class="space-y-5">{% csrf_token %}{% for field in form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="text-red-700 text-xs mt-2">{{ field.errors }}</div>{% endif %}</div>{% endfor %}<button class="btn btn-primary w-full">Create account</button></form><p class="text-sm text-stone-500 mt-6">Already registered? <a href="{% url 'login' %}" class="text-pine font-semibold">Log in</a></p></div>
+{% extends 'reviews/base.html' %}
+{% block title %}Sign up · Celelook{% endblock %}
+{% block content %}
+<section class="max-w-md mx-auto card p-8 md:p-10" aria-labelledby="signup-title">
+  <p class="v-eyebrow text-center">Begin your literary journey</p>
+  <div class="v-ornament" aria-hidden="true">❦</div>
+  <h1 id="signup-title" class="font-serif text-3xl text-ink text-center">Create your reading space</h1>
+  <p class="text-stone-500 text-sm mt-3 mb-7 text-center">Your notes are only visible in your own account.</p>
+  <form method="post" class="space-y-5">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<span class="helptext">{{ field.help_text }}</span>{% endif %}
+        {% if field.errors %}<div class="text-red-700 text-xs mt-2" role="alert">{{ field.errors }}</div>{% endif %}
+      </div>
+    {% endfor %}
+    <button class="btn btn-primary w-full" type="submit">Create account</button>
+  </form>
+  <p class="text-sm text-stone-500 mt-7 text-center">Already registered? <a href="{% url 'login' %}" class="text-pine font-semibold">Log in</a></p>
+</section>
 {% endblock %}
